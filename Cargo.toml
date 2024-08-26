@@ -4,7 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-rocket = "0.5.1"
+jsonwebtoken = { version = "9.3.0", features = ["use_pem"] }
+rocket = { version = "0.5.1", features = ["json", "secrets", "serde_json"] }
 
 [profile.dev]
 opt-level = 3

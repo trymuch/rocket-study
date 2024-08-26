@@ -1,5 +1,7 @@
 use rocket::{get, launch, routes};
 
+mod jwt;
+mod login;
 mod req;
 
 /// launch 是一个过程宏
@@ -13,18 +15,30 @@ fn rocket() -> _ {
     rocket::build()
         // 装载路由：将用户访问的请求和处理程序映射起来
         // 用户的请求匹配了相应的路由就可以调用对应的处理程序
-        .mount("/", routes![index])
+        .mount("/", routes![index, login::login])
         .mount(
             "/req",
             routes![
                 req::handle_head_req,
                 req::handle_head_as_get,
-                req::hello,
-                req::set,
-                req::hello_name_age_cool,
-                req::handle_defined_param,
-                req::get_path_buf,
+                req::dyn_path::hello,
+                req::dyn_path::set,
+                req::dyn_path::hello_name_age_cool,
+                req::dyn_path::handle_defined_param,
+                req::dyn_path::get_path_buf,
+                req::dyn_path::ignore_segment,
+                req::dyn_path::ignore_multiple_segment,
+                req::req_guard::req_guard,
+                req::req_guard::admin,
+                req::req_guard::user,
+                req::cookies::index,
+                req::cookies::get_all_cookies,
+                req::upload,
             ],
+        )
+        .mount(
+            "/req/rank",
+            routes![req::rank::user, req::rank::user_int, req::rank::user_str,],
         )
 }
 
